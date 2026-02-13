@@ -2,7 +2,7 @@
   <img src="docs/public/banner.png" alt="open-mcp-guardrails" />
 </p>
 
-# open-mcp-guardrails
+![GitHub Stars](https://img.shields.io/github/stars/interactive-inc/open-mcp-guardrails?style=flat-square) ![GitHub Forks](https://img.shields.io/github/forks/interactive-inc/open-mcp-guardrails?style=flat-square) ![License](https://img.shields.io/github/license/interactive-inc/open-mcp-guardrails?style=flat-square) ![Top Language](https://img.shields.io/github/languages/top/interactive-inc/open-mcp-guardrails?style=flat-square) ![Last Commit](https://img.shields.io/github/last-commit/interactive-inc/open-mcp-guardrails?style=flat-square) ![Issues](https://img.shields.io/github/issues/interactive-inc/open-mcp-guardrails?style=flat-square)
 
 [English](./README.md)
 
