@@ -1,6 +1,6 @@
 {
   "name": "@interactive-inc/open-mcp-guardrails",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Policy-based guardrails proxy for MCP servers",
   "type": "module",
   "exports": {
