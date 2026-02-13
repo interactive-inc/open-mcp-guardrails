@@ -93,7 +93,8 @@ export default withMermaid(
   defineConfig({
     title: "open-mcp-guardrails",
     description: "Policy-based guardrails proxy for MCP servers",
-    head: [["link", { rel: "icon", href: "/logo.png" }]],
+    base: "/open-mcp-guardrails/",
+    head: [["link", { rel: "icon", href: "/open-mcp-guardrails/logo.png" }]],
 
     locales: {
       root: {
