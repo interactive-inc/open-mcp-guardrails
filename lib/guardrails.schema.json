@@ -1,0 +1,307 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://unpkg.com/open-mcp-guardrails@latest/dist/guardrails.schema.json",
+  "title": "open-mcp-guardrails configuration",
+  "description": "Declarative configuration for the open-mcp-guardrails policy proxy",
+  "type": "object",
+  "additionalProperties": false,
+  "examples": [
+    {
+      "$schema": "https://unpkg.com/open-mcp-guardrails@latest/dist/guardrails.schema.json",
+      "rules": [
+        { "type": "pii", "action": "block" },
+        { "type": "secrets", "action": "block" }
+      ]
+    }
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "JSON Schema reference for editor autocompletion"
+    },
+    "servers": {
+      "type": "array",
+      "description": "Backend MCP servers to proxy",
+      "items": { "$ref": "#/$defs/server" }
+    },
+    "protect": {
+      "type": "array",
+      "description": "Preset names to enable (shorthand for common rule sets)",
+      "items": {
+        "type": "string",
+        "enum": ["pii", "secrets", "prompt-injection"]
+      }
+    },
+    "rules": {
+      "type": "array",
+      "description": "Policy rules to evaluate against tool calls",
+      "items": { "$ref": "#/$defs/rule" }
+    },
+    "onViolation": {
+      "type": "string",
+      "enum": ["block", "warn", "log"],
+      "description": "Default action when a violation is detected"
+    },
+    "trace": { "$ref": "#/$defs/traceConfig" },
+    "log": { "$ref": "#/$defs/logConfig" }
+  },
+  "$defs": {
+    "server": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "command"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "command": { "type": "string", "minLength": 1 },
+        "args": { "type": "array", "items": { "type": "string" } },
+        "env": { "type": "object", "additionalProperties": { "type": "string" } },
+        "cwd": { "type": "string" }
+      }
+    },
+    "traceConfig": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "maxMessages": { "type": "integer", "minimum": 1 },
+        "export": { "type": "string" }
+      }
+    },
+    "logConfig": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "level": { "type": "string", "enum": ["debug", "info", "warn", "error"] },
+        "format": { "type": "string", "enum": ["json", "text"] },
+        "output": { "type": "string" }
+      }
+    },
+    "action": {
+      "type": "string",
+      "enum": ["block", "warn", "log"],
+      "description": "What to do when this rule is violated"
+    },
+    "piiType": {
+      "type": "string",
+      "enum": [
+        "email", "phone_international", "phone_jp",
+        "credit_card", "my_number", "ssn", "ip_address"
+      ]
+    },
+    "secretType": {
+      "type": "string",
+      "enum": [
+        "aws_access_key", "aws_secret_key", "github_token",
+        "slack_token", "bearer_token", "private_key", "api_key",
+        "google_api_key", "stripe_key", "generic_secret"
+      ]
+    },
+    "scope": {
+      "description": "Limit this rule to specific tools (tool names or /regex/ patterns). Tool names use {server}__{tool} format.",
+      "oneOf": [
+        { "type": "string" },
+        { "type": "array", "items": { "type": "string" } }
+      ]
+    },
+    "conditionOperator": {
+      "type": "string",
+      "enum": [
+        "equals", "not_equals",
+        "starts_with", "not_starts_with",
+        "ends_with", "not_ends_with",
+        "contains", "not_contains",
+        "matches", "not_matches",
+        "exists", "not_exists"
+      ]
+    },
+    "condition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["field", "operator"],
+      "properties": {
+        "field": {
+          "type": "string",
+          "description": "Dot-notation path to the argument field (e.g. 'to', 'options.path')"
+        },
+        "operator": { "$ref": "#/$defs/conditionOperator" },
+        "value": {
+          "description": "Comparison value. Omit for exists/not_exists.",
+          "oneOf": [
+            { "type": "string" },
+            { "type": "number" },
+            { "type": "boolean" },
+            { "type": "array", "items": { "type": "string" } }
+          ]
+        }
+      }
+    },
+    "rule": {
+      "oneOf": [
+        { "$ref": "#/$defs/piiRule" },
+        { "$ref": "#/$defs/secretsRule" },
+        { "$ref": "#/$defs/promptInjectionRule" },
+        { "$ref": "#/$defs/contentFilterRule" },
+        { "$ref": "#/$defs/flowRule" },
+        { "$ref": "#/$defs/toolRule" }
+      ]
+    },
+    "piiRule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "action"],
+      "examples": [
+        { "type": "pii", "action": "block" },
+        { "type": "pii", "action": "warn", "exclude": ["ip_address"] },
+        { "type": "pii", "action": "block", "scope": ["filesystem__read_file"] }
+      ],
+      "properties": {
+        "type": { "const": "pii" },
+        "name": { "type": "string" },
+        "action": { "$ref": "#/$defs/action" },
+        "message": { "type": "string" },
+        "exclude": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/piiType" },
+          "description": "PII types to skip detection for"
+        },
+        "only": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/piiType" },
+          "description": "Only detect these PII types"
+        },
+        "scope": { "$ref": "#/$defs/scope" }
+      }
+    },
+    "secretsRule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "action"],
+      "examples": [
+        { "type": "secrets", "action": "block" },
+        { "type": "secrets", "action": "warn", "exclude": ["generic_secret"] },
+        { "type": "secrets", "action": "block", "scope": ["/^filesystem__/"] }
+      ],
+      "properties": {
+        "type": { "const": "secrets" },
+        "name": { "type": "string" },
+        "action": { "$ref": "#/$defs/action" },
+        "message": { "type": "string" },
+        "exclude": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/secretType" },
+          "description": "Secret types to skip detection for"
+        },
+        "only": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/secretType" },
+          "description": "Only detect these secret types"
+        },
+        "scope": { "$ref": "#/$defs/scope" }
+      }
+    },
+    "promptInjectionRule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "action"],
+      "examples": [
+        { "type": "prompt-injection", "action": "block" },
+        { "type": "prompt-injection", "action": "block", "threshold": 0.5 },
+        { "type": "prompt-injection", "action": "block", "scope": ["github__create_issue"] }
+      ],
+      "properties": {
+        "type": { "const": "prompt-injection" },
+        "name": { "type": "string" },
+        "action": { "$ref": "#/$defs/action" },
+        "message": { "type": "string" },
+        "threshold": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "default": 0.7,
+          "description": "Score threshold to trigger detection (0-1)"
+        },
+        "scope": { "$ref": "#/$defs/scope" }
+      }
+    },
+    "contentFilterRule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "action", "patterns"],
+      "examples": [
+        { "type": "content-filter", "action": "block", "patterns": ["classified", "/confidential/i"] },
+        { "type": "content-filter", "action": "block", "patterns": ["classified"], "scope": ["filesystem__read_file"] }
+      ],
+      "properties": {
+        "type": { "const": "content-filter" },
+        "name": { "type": "string" },
+        "action": { "$ref": "#/$defs/action" },
+        "message": { "type": "string" },
+        "patterns": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 1,
+          "description": "Strings or regex patterns (/pattern/flags) to match"
+        },
+        "label": {
+          "type": "string",
+          "description": "Label for the type of content being filtered"
+        },
+        "scope": { "$ref": "#/$defs/scope" }
+      }
+    },
+    "flowRule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "action", "from", "to"],
+      "examples": [
+        { "type": "flow", "action": "block", "from": "get_website", "to": "send_email" }
+      ],
+      "properties": {
+        "type": { "const": "flow" },
+        "name": { "type": "string" },
+        "action": { "$ref": "#/$defs/action" },
+        "message": { "type": "string" },
+        "from": {
+          "type": "string",
+          "description": "Tool name or /regex/ that must have been called previously"
+        },
+        "to": {
+          "type": "string",
+          "description": "Tool name or /regex/ being called now"
+        },
+        "window": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "How many recent tool calls to search"
+        }
+      }
+    },
+    "toolRule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "action", "tool", "conditions"],
+      "examples": [
+        {
+          "type": "tool", "action": "block", "tool": "send_email",
+          "conditions": [{ "field": "to", "operator": "not_ends_with", "value": "@company.com" }],
+          "message": "Only @company.com addresses allowed"
+        }
+      ],
+      "properties": {
+        "type": { "const": "tool" },
+        "name": { "type": "string" },
+        "action": { "$ref": "#/$defs/action" },
+        "message": { "type": "string" },
+        "tool": {
+          "type": "string",
+          "description": "Tool name or /regex/ to apply this rule to"
+        },
+        "conditions": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/condition" },
+          "minItems": 1,
+          "description": "All conditions must match (AND) to trigger a violation"
+        }
+      }
+    }
+  }
+}

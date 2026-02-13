@@ -1,0 +1,15 @@
+{
+  "$schema": "https://unpkg.com/open-mcp-guardrails@latest/dist/guardrails.schema.json",
+  "rules": [
+    { "type": "pii", "action": "block" },
+    { "type": "secrets", "action": "warn", "exclude": ["generic_secret"] },
+    { "type": "prompt-injection", "action": "block", "threshold": 0.5 },
+    { "type": "content-filter", "action": "block", "patterns": ["classified", "/confidential/i"] },
+    { "type": "flow", "action": "block", "from": "get_website", "to": "send_email" },
+    {
+      "type": "tool", "action": "block", "tool": "send_email",
+      "conditions": [{ "field": "to", "operator": "not_ends_with", "value": "@company.com" }],
+      "message": "Only @company.com addresses allowed"
+    }
+  ]
+}

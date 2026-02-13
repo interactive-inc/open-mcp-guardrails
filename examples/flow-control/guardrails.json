@@ -1,0 +1,11 @@
+{
+  "$schema": "https://unpkg.com/open-mcp-guardrails@latest/dist/guardrails.schema.json",
+  "rules": [
+    { "type": "flow", "action": "block", "from": "get_website", "to": "send_email" },
+    {
+      "type": "tool", "action": "block", "tool": "send_email",
+      "conditions": [{ "field": "to", "operator": "not_ends_with", "value": "@company.com" }],
+      "message": "Only @company.com addresses allowed"
+    }
+  ]
+}
