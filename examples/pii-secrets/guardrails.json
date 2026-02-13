@@ -1,5 +1,5 @@
 {
-  "$schema": "https://unpkg.com/open-mcp-guardrails@latest/dist/guardrails.schema.json",
+  "$schema": "https://unpkg.com/@interactive-inc/open-mcp-guardrails@latest/dist/guardrails.schema.json",
   "rules": [
     { "type": "pii", "action": "block", "exclude": ["my_number", "ip_address"], "scope": ["filesystem__read_file"] },
     { "type": "secrets", "action": "block", "only": ["aws_access_key"] }

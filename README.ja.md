@@ -62,7 +62,7 @@ export default defineConfig({
 
 ```json
 {
-  "$schema": "https://unpkg.com/open-mcp-guardrails@latest/dist/guardrails.schema.json",
+  "$schema": "https://unpkg.com/@interactive-inc/open-mcp-guardrails@latest/dist/guardrails.schema.json",
   "rules": [
     { "type": "pii", "action": "block" },
     { "type": "secrets", "action": "block" }

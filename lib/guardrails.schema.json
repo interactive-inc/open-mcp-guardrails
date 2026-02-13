@@ -1,13 +1,13 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://unpkg.com/open-mcp-guardrails@latest/dist/guardrails.schema.json",
+  "$id": "https://unpkg.com/@interactive-inc/open-mcp-guardrails@latest/dist/guardrails.schema.json",
   "title": "open-mcp-guardrails configuration",
   "description": "Declarative configuration for the open-mcp-guardrails policy proxy",
   "type": "object",
   "additionalProperties": false,
   "examples": [
     {
-      "$schema": "https://unpkg.com/open-mcp-guardrails@latest/dist/guardrails.schema.json",
+      "$schema": "https://unpkg.com/@interactive-inc/open-mcp-guardrails@latest/dist/guardrails.schema.json",
       "rules": [
         { "type": "pii", "action": "block" },
         { "type": "secrets", "action": "block" }
