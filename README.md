@@ -237,18 +237,18 @@ open-mcp-guardrails schema
 
 ## Supported Clients
 
-- [Claude Code](https://open-mcp-guardrails.dev/guide/claude-code) — `.mcp.json` project-level config
-- [Claude Desktop](https://open-mcp-guardrails.dev/guide/claude-desktop) — `claude_desktop_config.json`
-- [Codex CLI](https://open-mcp-guardrails.dev/guide/codex) — `.codex/config.toml`
+- [Claude Code](https://interactive-inc.github.io/open-mcp-guardrails/guide/claude-code) — `.mcp.json` project-level config
+- [Claude Desktop](https://interactive-inc.github.io/open-mcp-guardrails/guide/claude-desktop) — `claude_desktop_config.json`
+- [Codex CLI](https://interactive-inc.github.io/open-mcp-guardrails/guide/codex) — `.codex/config.toml`
 
 ## Documentation
 
-See the [documentation site](https://open-mcp-guardrails.dev) for detailed guides and API reference.
+See the [documentation site](https://interactive-inc.github.io/open-mcp-guardrails) for detailed guides and API reference.
 
-- [Introduction](https://open-mcp-guardrails.dev/guide/introduction) — Architecture and features
-- [Quick Start](https://open-mcp-guardrails.dev/guide/quick-start) — Create a config file and verify it works
-- [Configuration](https://open-mcp-guardrails.dev/guide/configuration) — Config options, presets, and scope
-- [API Reference](https://open-mcp-guardrails.dev/api/) — Fluent Builder API details
+- [Introduction](https://interactive-inc.github.io/open-mcp-guardrails/guide/introduction) — Architecture and features
+- [Quick Start](https://interactive-inc.github.io/open-mcp-guardrails/guide/quick-start) — Create a config file and verify it works
+- [Configuration](https://interactive-inc.github.io/open-mcp-guardrails/guide/configuration) — Config options, presets, and scope
+- [API Reference](https://interactive-inc.github.io/open-mcp-guardrails/api/) — Fluent Builder API details
 
 ## License
 

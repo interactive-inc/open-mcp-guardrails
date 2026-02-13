@@ -237,18 +237,18 @@ open-mcp-guardrails schema
 
 ## 対応クライアント
 
-- [Claude Code](https://open-mcp-guardrails.dev/ja/guide/claude-code) — `.mcp.json` プロジェクトレベル設定
-- [Claude Desktop](https://open-mcp-guardrails.dev/ja/guide/claude-desktop) — `claude_desktop_config.json`
-- [Codex CLI](https://open-mcp-guardrails.dev/ja/guide/codex) — `.codex/config.toml`
+- [Claude Code](https://interactive-inc.github.io/open-mcp-guardrails/ja/guide/claude-code) — `.mcp.json` プロジェクトレベル設定
+- [Claude Desktop](https://interactive-inc.github.io/open-mcp-guardrails/ja/guide/claude-desktop) — `claude_desktop_config.json`
+- [Codex CLI](https://interactive-inc.github.io/open-mcp-guardrails/ja/guide/codex) — `.codex/config.toml`
 
 ## ドキュメント
 
-詳細なガイドと API リファレンスは [ドキュメントサイト](https://open-mcp-guardrails.dev/ja/) を参照してください。
+詳細なガイドと API リファレンスは [ドキュメントサイト](https://interactive-inc.github.io/open-mcp-guardrails/ja/) を参照してください。
 
-- [概要](https://open-mcp-guardrails.dev/ja/guide/introduction) — アーキテクチャと特徴
-- [クイックスタート](https://open-mcp-guardrails.dev/ja/guide/quick-start) — 設定ファイルの作成と動作確認
-- [設定](https://open-mcp-guardrails.dev/ja/guide/configuration) — 設定オプション、プリセット、scope
-- [API リファレンス](https://open-mcp-guardrails.dev/ja/api/) — Fluent Builder API の詳細
+- [概要](https://interactive-inc.github.io/open-mcp-guardrails/ja/guide/introduction) — アーキテクチャと特徴
+- [クイックスタート](https://interactive-inc.github.io/open-mcp-guardrails/ja/guide/quick-start) — 設定ファイルの作成と動作確認
+- [設定](https://interactive-inc.github.io/open-mcp-guardrails/ja/guide/configuration) — 設定オプション、プリセット、scope
+- [API リファレンス](https://interactive-inc.github.io/open-mcp-guardrails/ja/api/) — Fluent Builder API の詳細
 
 ## ライセンス
 
